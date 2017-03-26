@@ -1,0 +1,39 @@
+{
+  "name": "todoappapi",
+  "version": "1.0.0",
+  "description": "This is an API for ToDo application.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harishrathor/ToDoAppAPI.git"
+  },
+  "keywords": [
+    "ToDoAppAPI"
+  ],
+  "author": "Harish Rathor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harishrathor/ToDoAppAPI/issues"
+  },
+  "homepage": "https://github.com/harishrathor/ToDoAppAPI#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.0",
+    "body-parser": "*",
+    "express": "*",
+    "express-jwt": "^5.1.0",
+    "jsonwebtoken": "^7.2.1",
+    "jwt-simple": "*",
+    "method-override": "^2.3.8",
+    "mongoose": "*",
+    "mongoose-sequence": "^3.1.0",
+    "morgan": "*",
+    "nodemon": "*",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0"
+  }
+}
