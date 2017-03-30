@@ -22,10 +22,10 @@ process.on("SIGINT",function(){
 	});
 });
 module.exports=
-{
-	'secret': 'harishrathor',
-	'database': 'mongodb://127.0.0.1:7070/todoapp'
-};
+	{
+		'secret': 'harishrathor',
+		'database': 'mongodb://127.0.0.1:7070/todoapp'
+	};
 // files in this connection should appear
 require("./../app/models/user");
 require("./../app/models/todolist");
