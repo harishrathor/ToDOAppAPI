@@ -19,32 +19,30 @@ function todoList(req,res){
 	{
 		var decoded=jwt.decode(token,config.secret);
 		User.findOne(
-		{
-			username: decoded.username
-		},function(err,user)
-		{
-			if(err)
 			{
-				throw err;
-			}
-			if(!user)
+				username: decoded.username
+			},function(err,user)
 			{
-				return res.status(403).send({success: false,msg: 'Authentication failed.You are not authorized to visit this link'});
-			}
-			else
-			{
-				Todo.getTodoList(user,function(err,todolists)
+				if(err)
 				{
-					if(err)
-					{
-						throw err;
-					}
-					return res.json(todolists);  
-				}); 
-				
-				
-			}
-		});
+					throw err;
+				}
+				if(!user)
+				{
+					return res.status(403).send({success: false,msg: 'Authentication failed.You are not authorized to visit this link'});
+				}
+				else
+				{
+					Todo.getTodoList(user,function(err,todolists)
+						{
+						if(err)
+						{
+							throw err;
+						}
+						return res.json(todolists);  
+						}); 
+				}
+			});
 	}
 	else
 	{
@@ -57,38 +55,36 @@ function todoInsert(req,res){
 	{
 		var decoded=jwt.decode(token,config.secret);
 		User.findOne(
-		{
-			username: decoded.username
-		},function(err,user)
-		{
-			if(err)
 			{
-				console.log('throwing error');
-				throw err;
-			}
-			if(!user)
+				username: decoded.username
+			},function(err,user)
 			{
-				return res.status(403).send({success: false,msg: 'Authentication failed.'});
-			}
-			else
-			{
-				var entry=
+				if(err)
 				{
-					username: user.username,
-					todoitem: req.body.todoitem,
-					description: req.body.description,
-					status: req.body.status,
-					catagory: req.body.catagory,
-					target_date: req.body.target_date
-					
+					console.log('throwing error');
+					throw err;
 				}
-				db.collection('todolist').save(entry,function(err,doc)
+				if(!user)
 				{
-					return res.json(doc);
-				})
-				
-			}
-		});
+					return res.status(403).send({success: false,msg: 'Authentication failed.'});
+				}
+				else
+				{
+					var entry=
+						{
+							username: user.username,
+							todoitem: req.body.todoitem,
+							description: req.body.description,
+							status: req.body.status,
+							catagory: req.body.catagory,
+							target_date: req.body.target_date
+						}
+					db.collection('todolist').save(entry,function(err,doc)
+						{
+						return res.json(doc);
+						})
+				}
+			});
 	}
 	else
 	{
@@ -102,30 +98,30 @@ function todoDelete(req,res){
 	{
 		var decoded=jwt.decode(token,config.secret);
 		User.findOne(
-		{
-			username: decoded.username
-		},function(err,user)
-		{
-			if(err)
 			{
-				throw err;
-			}
-			if(!user)
+				username: decoded.username
+			},function(err,user)
 			{
-				return res.status(403).send({success: false,msg: 'Authentication failed.'});
-			}
-			else
-			{
-				Todo.removeTodoItem(id,function(err,doc)
+				if(err)
 				{
-					if(err)
-					{
-						throw err;
-					}
-					return res.json(doc);
-				});
-			}
-		});
+					throw err;
+				}
+				if(!user)
+				{
+					return res.status(403).send({success: false,msg: 'Authentication failed.'});
+				}
+				else
+				{
+					Todo.removeTodoItem(id,function(err,doc)
+						{
+						if(err)
+						{
+							throw err;
+						}
+						return res.json(doc);
+						});
+				}
+			});
 	}
 	else
 	{
@@ -138,77 +134,74 @@ function todoUpdate(req,res){
 	{
 		var decoded=jwt.decode(token,config.secret);
 		User.findOne(
-		{
-			username: decoded.username
-		},function(err,user)
-		{
-			if(err)
 			{
-				console.log('throwing error');
-				throw err;
-			}
-			if(!user)
+				username: decoded.username
+			},function(err,user)
 			{
-				return res.status(403).send({success: false,msg: 'Authentication failed.'});
-			}
-			else
-			{
-				var id=req.params.id;
-				Todo.getTodoListById(id,function(err,list)
+				if(err)
 				{
-					if(err)
-					{
-						console.log(err);
-						res.status(500).send({success: false,msg: 'error'});
-					}
-					else
-					{
-						if(!list)
+					console.log('throwing error');
+					throw err;
+				}
+				if(!user)
+				{
+					return res.status(403).send({success: false,msg: 'Authentication failed.'});
+				}
+				else
+				{
+					var id=req.params.id;
+					Todo.getTodoListById(id,function(err,list)
 						{
-							res.status(404).send({success: false,msg: 'no list found'});
-						}	
+						if(err)
+						{
+							console.log(err);
+							res.status(500).send({success: false,msg: 'error'});
+						}
 						else
 						{
-							if(req.body.todoitem)
+							if(!list)
 							{
-								list.todoitem=req.body.todoitem;
-							}
-							if(req.body.description)
+								res.status(404).send({success: false,msg: 'no list found'});
+							}	
+							else
 							{
-								list.description=req.body.description;
-							}
-							if(req.body.status)
-							{
-								list.status=req.body.status;
-							}
-							if(req.body.catagory)
-							{
-								list.catagory=req.body.catagory;
-							}
-							if(req.body.target_date)
-							{
-								list.target_date=req.body.target_date;
-							}
-							list.save(function(err,updatedList)
-							{
-								if(err)
+								if(req.body.todoitem)
 								{
-									console.log(err);
-									res.status(500).send({success: false,msg: 'error  while saving',error:err});
+									list.todoitem=req.body.todoitem;
 								}
-								else
+								if(req.body.description)
 								{
-									res.send(updatedList);
+									list.description=req.body.description;
 								}
-								
-							});
-						}	
-					}
-				});
-				
-				
-			}
-		});
+								if(req.body.status)
+								{
+									list.status=req.body.status;
+								}
+								if(req.body.catagory)
+								{
+									list.catagory=req.body.catagory;
+								}
+								if(req.body.target_date)
+								{
+									list.target_date=req.body.target_date;
+								}
+								list.save(function(err,updatedList)
+									{
+									if(err)
+									{
+										console.log(err);
+										res.status(500).send({success: false,msg: 'error  while saving',error:err});
+									}
+									else
+									{
+										res.send(updatedList);
+									}
+									});
+							}	
+						}
+						});
+				}
+			});
 	}
 	else
 	{

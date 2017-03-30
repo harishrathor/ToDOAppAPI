@@ -1,9 +1,7 @@
-
 module.exports=function(app,passport){
 	var routeFolder="./../app/routes/";
 
 	// Routes for user model
-
 	app.get("/",function(req,res){
 		res.json({
 			"success":true,

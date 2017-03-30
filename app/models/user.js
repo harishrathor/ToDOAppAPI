@@ -3,7 +3,6 @@ var bcrypt=require("bcryptjs");
 var AutoIncrement=require("mongoose-sequence");
 var Schema=mongoose.Schema;
 
-
 var UserSchema=new Schema({
 	username:{type:String,unique:true,required:[true,"Username required."]},
 	name:{type:String,require:true},
